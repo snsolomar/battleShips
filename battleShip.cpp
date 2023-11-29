@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <fstream>
 using namespace std;
 const int BOARD_SIZE = 10, FLEET_SIZE=3;
 struct Point {
@@ -20,7 +21,8 @@ struct Player {
     Ship fleet[FLEET_SIZE];
 };
 
-void initFleet(Player p){
+
+void initFleet(Player& p) {
     // populate a players fleet
     // 1. Read ships.txt, read the name and the size
     /*for each line of file
@@ -28,6 +30,26 @@ void initFleet(Player p){
         read the name, s.name
         read the size, s.size
         */
+    ifstream shipFile("ships.txt");
+
+    if (!shipFile.is_open()) {
+        cout << "Error opening file." << endl;
+        exit(1);
+    }
+
+    for (int i = 0; i < FLEET_SIZE; i++) {
+        Ship s;
+        if (shipFile >> s.name >> s.size) {
+            s.hitcount = 0;
+            p.fleet[i] = s;
+        }
+        else {
+            cout << "Error reading data from file." << endl;
+            break;
+        }
+    }
+    
+    shipFile.close();
 }
 
 void initBoard(Player& p) {
@@ -40,9 +62,15 @@ void initBoard(Player& p) {
 
 
 int main() {
+    Player player1, player2;
     
+    initFleet(player1);
+    initFleet(player2);
+    
+    initBoard(player1);
+    initBoard(player2);
 
+    // Add the main game logic here
 
-
-
+    return 0;
 }
