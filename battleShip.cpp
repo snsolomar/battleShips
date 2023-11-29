@@ -17,5 +17,10 @@ struct Ship {
 };
 
 int main() {
-    return 0;
+    
+
+    // populate a players fleet
+    // 1. Read ships.txt, read the name and the size
+
+
 }
