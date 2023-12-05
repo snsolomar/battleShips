@@ -1,3 +1,7 @@
+// Guards allow const variables to migrate between files
+#ifndef HEADER_H
+#define HEADER_H
+
 #include <iostream>
 #include <vector>
 #include <array>
@@ -17,11 +21,12 @@ struct Point {
     int row;
     int column;
 };
-
+// stores information about each ship
 struct Ship {
     string name;
     int size;
     int hitcount;
+    // store the positions of each ship
     vector<Point> positions;
 };
 
@@ -40,3 +45,4 @@ void placeShip(Player& p1, int index);
 void boardSetUp(Player& p1, Player& p2);
 
 
+#endif // HEADER_H

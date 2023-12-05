@@ -1,4 +1,5 @@
 #include "header.h"
+#include "functions.cpp"
 
 using namespace std;
 
@@ -11,5 +12,7 @@ int main() {
     boardSetUp(p1, p2);
     // Display the initial board
     displayBoard(p1.board, p2.board);
+    // Start the main game loop
+    playGame(p1, p2);
     return 0;
 }
