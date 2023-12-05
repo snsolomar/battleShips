@@ -29,10 +29,13 @@ struct Ship {
     // store the positions of each ship
     vector<Point> positions;
 };
-
+// represents each player
 struct Player {
     char board[BOARD_SIZE][BOARD_SIZE];
     Ship fleet[FLEET_SIZE];
+    // Each player has a board
+    // 2D array to track which ship occupies which position on the board
+    // this is used to find out which ship is hit
     int shipBoard[BOARD_SIZE][BOARD_SIZE];
 };
 
