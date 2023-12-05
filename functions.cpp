@@ -123,11 +123,13 @@ void boardSetUp(Player& p1, Player& p2) {
     for (int i = 0; i < FLEET_SIZE; i++) {
         cout << "Placing ship " << i + 1 << " for Player 1" << endl;
         placeShip(p1, i);
-        displayBoard(p1.board, p2.board); // Display board after placing each ship for Player 1
+        // Display board after placing each ship for Player 1
+        displayBoard(p1.board, p2.board); 
 
         cout << "Placing ship " << i + 1 << " for Player 2" << endl;
         placeShip(p2, i);
-        displayBoard(p1.board, p2.board); // Display board after placing each ship for Player 2
+        // Display board after placing each ship for Player 2
+        displayBoard(p1.board, p2.board); 
     }
 }
 // Displays Board after attack
@@ -136,9 +138,11 @@ void updateBoardAfterAttack(Player& attacker, Player& defender) {
 }
 // Check if hit
 void checkIfShipSunk(Player& defender, int row, int col) {
-    int shipIndex = defender.shipBoard[row][col]; // Get the ship index at the hit position
+    // Get the ship index at the hit position
+    int shipIndex = defender.shipBoard[row][col]; 
     if (shipIndex == -1) {
-        return; // No ship at this position
+        // No ship at this position
+        return; 
     }
 
     defender.fleet[shipIndex].hitcount++; // Increment hit count of the ship
@@ -182,17 +186,18 @@ void makeAttack(Player& attacker, Player& defender) {
 // Checks if the game is over after an attack
 bool checkForGameOver(Player& player) {
     // Check if all ships of a player are sunk
-    // Check if all ships of a player are sunk
     for (int i = 0; i < FLEET_SIZE; i++) {
         // Debugging line
         cout << "Ship " << player.fleet[i].name << ": hitcount = " << player.fleet[i].hitcount << ", size = " << player.fleet[i].size << endl; 
-
+        // Debugging line
         if (player.fleet[i].hitcount < player.fleet[i].size) {
-            cout << "Game is not over, ship " << player.fleet[i].name << " is not sunk." << endl; // Debugging line
-            return false; // Game is not over
+            cout << "Game is not over, ship " << player.fleet[i].name << " is not sunk." << endl; 
+            // Game is not over
+            return false; 
         }
     }
-    return true; // All ships are sunk
+    // All ships are sunk
+    return true; 
 }
 // Start the game
 void playGame(Player& p1, Player& p2) {
