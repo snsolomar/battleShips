@@ -149,8 +149,10 @@ void checkIfShipSunk(Player& defender, int row, int col) {
 
     if (defender.fleet[shipIndex].hitcount == defender.fleet[shipIndex].size) {
         cout << "Ship " << defender.fleet[shipIndex].name << " sunk!" << endl;
-        for (auto& pos : defender.fleet[shipIndex].positions) {
-            defender.board[pos.row][pos.column] = 'S'; // 'S' for sunk
+        for (int i = 0; i < defender.fleet[shipIndex].positions.size(); ++i) {
+            int posRow = defender.fleet[shipIndex].positions[i].row;
+            int posCol = defender.fleet[shipIndex].positions[i].column;
+            defender.board[posRow][posCol] = 'S'; // Mark 'S' for sunk
         }
     }
 }
