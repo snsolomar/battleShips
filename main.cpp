@@ -53,57 +53,43 @@ void displayBoards(char playerBoard[][BOARD_SIZE], char enemyBoard[][BOARD_SIZE]
         cout << endl; // Move to the next line
     }
 }
+// void displayBoards(char playerBoard[][BOARD_SIZE], char enemyBoard[][BOARD_SIZE]) 
+// {
+//     const string SEP = " | ";
+//     const string LINE = "------------";
+//     const string SPACE = " ";
+
+//     const char A = 'A';
+//     const char ROWLABELS[] = {'A', 'B', 'C', 'D', 'E', 'F'};
+//     const string LABEL = "ABCDEF";
+
+//     // Top Border
+//     cout << LINE << endl;
+
+//     for (int i = 0; i < BOARD_SIZE; i++)
+//     {
+//         cout << char(A+i);
+//         cout << ROWLABELS[i];
+        
+//         for (int j = 0; i < BOARD_SIZE; j++)
+//         {
+//             cout << SEP << playerBoard[i][j];
+//         }
+//         cout << endl << LINE << endl;
+//     }
+
+// }
 
 
 
-
-void initFleet(Player& p) {
-    // populate a players fleet
-    // 1. Read ships.txt, read the name and the size
-    /*for each line of file
-        select the next ship in the array, s
-        read the name, s.name
-        read the size, s.size
-        */
-    ifstream shipFile("ships.txt");
-
-    if (!shipFile.is_open()) {
-        cout << "Error opening file." << endl;
-        exit(1);
-    }
-
-    for (int i = 0; i < FLEET_SIZE; i++) {
-        Ship s;
-        if (shipFile >> s.name >> s.size) {
-            s.hitcount = 0;
-            p.fleet[i] = s;
-        }
-        else {
-            cout << "Error reading data from file." << endl;
-            break;
-        }
-    }
-    
-    shipFile.close();
-}
-
-void initBoard(Player& p) {
-    for (int i = 0; i < BOARD_SIZE; i++) {
-        for (int j = 0; j < BOARD_SIZE; j++) {
-            p.board[i][j] = ' '; // Initialize all cells as empty (' ')
-        }
-    }
-}
 
 
 int main() {
     Player player1, player2;
     
-    initFleet(player1);
-    initFleet(player2);
+    // initFleet(player1);
+    // initFleet(player2);
     
-    initBoard(player1);
-    initBoard(player2);
 
     // Initialize player boards with 0 (for testing)
     char player1Board[BOARD_SIZE][BOARD_SIZE] = {0};
