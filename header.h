@@ -1,7 +1,3 @@
-// Guards allow const variables to migrate between files
-#ifndef HEADER_H
-#define HEADER_H
-
 #include <iostream>
 #include <vector>
 #include <array>
@@ -40,12 +36,15 @@ struct Player {
 };
 
 // Function declarations
-void displayBoard(char b1[][BOARD_SIZE], char b2[][BOARD_SIZE]);
+void displayBoard(char b1[][BOARD_SIZE], char b2[][BOARD_SIZE], bool gameStarted);
 void initFleet(Player& P);
 bool spaceOccupied(int row, int col, char orientation, const Player& p1, int shipSize);
 void getValidShipInfo(int& row, int& col, char& orientation, const Player& p1, int index);
 void placeShip(Player& p1, int index);
 void boardSetUp(Player& p1, Player& p2);
+void checkIfShipSunk(Player& attacker, Player& defender, int row, int col);
+void makeAttack(Player& attacker, Player& defender);
+bool checkForGameOver(Player& player);
+void playGame(Player& p1, Player& p2);
 
 
-#endif // HEADER_H

@@ -1,6 +1,7 @@
 #include "header.h"
 
-void displayBoard(char b1[][BOARD_SIZE], char b2[][BOARD_SIZE]) {
+// Displays board with ships during setup, then empty board during gameplay
+void displayBoard(char b1[][BOARD_SIZE], char b2[][BOARD_SIZE], bool gameStarted) {
     // Displaying both player boards
     cout << setw(25) << "Player 1's Board " << setw(37) << "Player 2's Board \n";
     // Display row numbers
@@ -17,16 +18,26 @@ void displayBoard(char b1[][BOARD_SIZE], char b2[][BOARD_SIZE]) {
     for (int j = 0; j < BOARD_SIZE; j++) {
         cout << char('A' + j);
         for (int x = 0; x < BOARD_SIZE; x++) {
-            cout << SEP << b1[j][x];
+            char displayChar = b1[j][x];
+            // Hide unhit ships ('x') during gameplay
+            if (gameStarted && displayChar == 'x') {
+                displayChar = '0';
+            }
+            cout << SEP << displayChar;
         }
-        cout << SEP << setw(10);
-        cout << char('A' + j);
+        cout << SEP << setw(10) << char('A' + j);
         for (int x = 0; x < BOARD_SIZE; x++) {
-            cout << SEP << b2[j][x];
+            char displayChar = b2[j][x];
+            // Hide unhit ships ('x') during gameplay
+            if (gameStarted && displayChar == 'x') {
+                displayChar = '0';
+            }
+            cout << SEP << displayChar;
         }
         cout << SEP << endl << setw(LINE.length() + 2) << LINE << SPACEBETWEENBOARD << setw(LINE.length()) << LINE << endl;
     }
 }
+
 // initializes ships and sets their hitcounts to 0
 void initFleet(Player& P) {
     ifstream input("ships.txt");
@@ -108,12 +119,14 @@ void placeShip(Player& p1, int index) {
             p1.board[row][i] = 'x';
             // Set ship index on shipBoard
             p1.shipBoard[row][i] = index;
+            p1.fleet[index].positions.push_back({row, i});
         }
     } else if ((ori == 'V' || ori == 'v') && row + p1.fleet[index].size <= BOARD_SIZE) {
         for (int i = row; i < row + p1.fleet[index].size; i++) {
             p1.board[i][col] = 'x';
             // Set ship index on shipBoard
             p1.shipBoard[i][col] = index; 
+            p1.fleet[index].positions.push_back({i, col});
         }
     }
 }
@@ -124,20 +137,20 @@ void boardSetUp(Player& p1, Player& p2) {
         cout << "Placing ship " << i + 1 << " for Player 1" << endl;
         placeShip(p1, i);
         // Display board after placing each ship for Player 1
-        displayBoard(p1.board, p2.board); 
+        displayBoard(p1.board, p2.board, false); 
 
         cout << "Placing ship " << i + 1 << " for Player 2" << endl;
         placeShip(p2, i);
         // Display board after placing each ship for Player 2
-        displayBoard(p1.board, p2.board); 
+        displayBoard(p1.board, p2.board, false); 
     }
 }
 // Displays Board after attack
 void updateBoardAfterAttack(Player& attacker, Player& defender) {
-    displayBoard(attacker.board, defender.board);
+    displayBoard(attacker.board, defender.board, true);
 }
 // Check if hit
-void checkIfShipSunk(Player& defender, int row, int col) {
+void checkIfShipSunk(Player& attacker, Player& defender, int row, int col) {
     // Get the ship index at the hit position
     int shipIndex = defender.shipBoard[row][col]; 
     if (shipIndex == -1) {
@@ -154,6 +167,7 @@ void checkIfShipSunk(Player& defender, int row, int col) {
             int posCol = defender.fleet[shipIndex].positions[i].column;
             defender.board[posRow][posCol] = 'S'; // Mark 'S' for sunk
         }
+        displayBoard(attacker.board, defender.board, true);
     }
 }
 // allows player to make attack
@@ -175,13 +189,15 @@ void makeAttack(Player& attacker, Player& defender) {
     if (defender.board[row][col] == 'x') {
         cout << "Hit detected at " << rowInput << col+1 << endl;
         defender.board[row][col] = 'H'; // Mark hit on the board
-        updateBoardAfterAttack(attacker, defender);
-        checkIfShipSunk(defender, row, col);
+        //updateBoardAfterAttack(attacker, defender);
+        checkIfShipSunk(attacker, defender, row, col);
     } else {
         cout << "Miss." << endl;
         defender.board[row][col] = 'M'; // Mark miss on the board
-        updateBoardAfterAttack(attacker, defender);
+        //updateBoardAfterAttack(attacker, defender);
+        
     }
+    displayBoard(attacker.board, defender.board, true);
 }
 
 
@@ -190,7 +206,7 @@ bool checkForGameOver(Player& player) {
     // Check if all ships of a player are sunk
     for (int i = 0; i < FLEET_SIZE; i++) {
         // Debugging line
-        cout << "Ship " << player.fleet[i].name << ": hitcount = " << player.fleet[i].hitcount << ", size = " << player.fleet[i].size << endl; 
+        // cout << "Ship " << player.fleet[i].name << ": hitcount = " << player.fleet[i].hitcount << ", size = " << player.fleet[i].size << endl; 
         // Debugging line
         if (player.fleet[i].hitcount < player.fleet[i].size) {
             cout << "Game is not over, ship " << player.fleet[i].name << " is not sunk." << endl; 
